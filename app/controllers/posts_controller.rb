@@ -4,7 +4,7 @@ gem 'bunny'
 class PostsController < ApplicationController
 
   def publish
-    connection = Bunny.new(host: ENV['CLOUDAMQP_URL'],
+    connection = Bunny.new(host: 'spider.rmq.cloudamqp.com',
        :vhost => "ojsindrn",
        :user => "ojsindrn:ojsindrn",
        :password => "ZIKUsMxhLMT5q8yXOag1AzMtiGI51h54")
