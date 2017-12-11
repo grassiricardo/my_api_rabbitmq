@@ -4,7 +4,10 @@ gem 'bunny'
 class PostsController < ApplicationController
 
   def publish
-    connection = Bunny.new(host: ENV['CLOUDAMQP_URL'])
+    connection = Bunny.new(host: ENV['CLOUDAMQP_URL'],
+       :vhost => "ojsindrn",
+       :user => "ojsindrn:ojsindrn",
+       :password => "ZIKUsMxhLMT5q8yXOag1AzMtiGI51h54")
     connection.start
     channel = connection.create_channel
 
