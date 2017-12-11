@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   def publish
     connection = Bunny.new(host: 'spider.rmq.cloudamqp.com',
        :vhost => "ojsindrn",
-       :user => "ojsindrn:ojsindrn",
+       :user => "ojsindrn",
        :password => "ZIKUsMxhLMT5q8yXOag1AzMtiGI51h54")
     connection.start
     channel = connection.create_channel
