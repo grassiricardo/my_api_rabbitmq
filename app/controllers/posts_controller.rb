@@ -4,7 +4,7 @@ gem 'bunny'
 class PostsController < ApplicationController
 
   def publish
-    connection = Bunny.new(host: Rails.application.secrets.secret_url_cloudamqp_bunny)
+    connection = Bunny.new(host: ENV['CLOUDAMQP_URL'])
     connection.start
     channel = connection.create_channel
 
