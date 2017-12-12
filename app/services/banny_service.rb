@@ -7,24 +7,28 @@ class BannyService
   end
 
   def publish
-    open_connection
-    queue = @channel.queue(@name_queue, durable: true)
-    queue.publish(@message, persistent: true)
-    sleep 1.0
-    close_connection
+    begin
+      queue = @connection.create_channel.queue(@name_queue, durable: true) if open_connection
+      close_connection if queue.publish(@message, persistent: true)
+    rescue Bunny::PreconditionFailed => e
+      puts "Channel-level exception! Code: #{e.channel_close.reply_code},
+      message: #{e.channel_close.reply_text}".squish
+    end
   end
 
   private
 
   def open_connection
-    @connection = Bunny.new(
-      host: Rails.application.secrets.secret_cloudamqp_bunny_host,
-      vhost: Rails.application.secrets.secret_cloudamqp_bunny_vhost,
-      user: Rails.application.secrets.secret_cloudamqp_bunny_user,
-      password: Rails.application.secrets.secret_cloudamqp_bunny_password
-    )
-    @connection.start
-    @channel = @connection.create_channel
+    begin
+      @connection = Bunny.new(
+        host: Rails.application.secrets.secret_cloudamqp_bunny_host,
+        vhost: Rails.application.secrets.secret_cloudamqp_bunny_vhost,
+        user: Rails.application.secrets.secret_cloudamqp_bunny_user,
+        password: Rails.application.secrets.secret_cloudamqp_bunny_password
+      ).start
+    rescue Bunny::TCPConnectionFailed => e
+      puts "Connection failed"
+    end
   end
 
   def close_connection
