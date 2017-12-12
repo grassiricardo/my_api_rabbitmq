@@ -11,15 +11,12 @@ class PostsController < ApplicationController
     connection.start
     channel = connection.create_channel
 
-    q = channel.queue("teste", :durable => true)
-    msg  = ARGV.empty? ? "Hello World!11111" : ARGV.join(" ")
+    q = channel.queue("outrafila", :durable => true)
+    msg  = ARGV.empty? ? "Outro teste" : ARGV.join(" ")
 
     q.publish(msg, :persistent => true)
-    puts " [x] Sent #{msg}"
-    render json: {success: true}, status: 200, messagem: "#{msg}"
-
+    render json: {success: true, messagem: "#{msg}"}, status: 200
     sleep 1.0
     connection.close
-
   end
 end
