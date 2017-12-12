@@ -1,6 +1,6 @@
 class Hello
   include Sneakers::Worker
-  from_queue 'outrafila'
+  from_queue 'grassi'
 
   def work(msg)
     puts " [x] Get #{msg}"
