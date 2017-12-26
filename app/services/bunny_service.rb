@@ -1,6 +1,6 @@
 gem 'bunny'
 
-class BannyService
+class BunnyService
   def initialize(name_queue, message)
     @name_queue = name_queue
     @message = message
